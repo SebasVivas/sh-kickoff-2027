@@ -60,6 +60,7 @@
     reproductor.replaceChildren(medio);
     if (medio.play) {
       const este = medio;
+      este.muted = false;
       este.play().catch((e) => {
         // Si el navegador no deja arrancar solo, vuelve el botón grande de play
         if (e.name === "NotAllowedError" && medio === este) {
@@ -80,6 +81,7 @@
     if (!medio.play) return;
     const este = medio;
     desbloqueando = true;
+    este.muted = true; // la autorización no debe oírse
     reproductor.prepend(este);
     este.play()
       .then(() => {
@@ -256,8 +258,10 @@
     entrarBloque(tl, t0 + 2.25);
     entrarTextos(tl, t0 + 2.05);
 
+    let abierta = false;
     const abrir = () => {
-      if (tl.progress() > 0 || tl.isActive()) return;
+      if (abierta) return;
+      abierta = true;
       desbloquearSonido();
       tl.play();
     };
@@ -588,7 +592,7 @@
     });
     return Promise.race([
       Promise.all(tareas.map(avance)).then(() => true),
-      new Promise((r) => setTimeout(() => r(false), LIMITE_CARGA_MS)),
+      new Promise((r) => setTimeout(() => r(false), Math.max(2000, LIMITE_CARGA_MS - performance.now()))),
     ]);
   }
 
