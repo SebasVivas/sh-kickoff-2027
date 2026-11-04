@@ -2,9 +2,10 @@
   "use strict";
 
   const raiz = document.documentElement;
+  clearTimeout(window.__seguro);
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-  const pantallaAncha = matchMedia("(min-width: 640px) and (min-aspect-ratio: 6/5)");
+  const pantallaAncha = matchMedia("(min-width: 480px) and (min-aspect-ratio: 1/1)");
   const sinMovimiento = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const conMouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const hayGsap = typeof window.gsap !== "undefined";
@@ -16,6 +17,12 @@
   let medio = null;
   let desbloqueando = false;
   let enCine = false;
+  let videoPedido = false;
+
+  const aviso = document.createElement("p");
+  aviso.className = "aviso-video";
+  aviso.setAttribute("role", "alert");
+  aviso.textContent = "The video could not load. Check your connection and press play to try again.";
 
   function crearMedio() {
     const { tipo, fuente, cliente } = reproductor.dataset;
@@ -29,6 +36,7 @@
       video.addEventListener("play", entrarCine);
       video.addEventListener("pause", salirCine);
       video.addEventListener("ended", alTerminarVideo);
+      video.addEventListener("error", alFallarVideo);
       return video;
     }
     const marcoExterno = document.createElement("iframe");
@@ -43,12 +51,24 @@
 
   function mostrarMedio() {
     medio = medio || crearMedio();
+    videoPedido = true;
+    desbloqueando = false;
     if (medio.dataset.src) {
       medio.src = medio.dataset.src;
       entrarCine();
     }
     reproductor.replaceChildren(medio);
-    if (medio.play) medio.play().catch(() => {});
+    if (medio.play) {
+      const este = medio;
+      este.play().catch((e) => {
+        // Si el navegador no deja arrancar solo, vuelve el botón grande de play
+        if (e.name === "NotAllowedError" && medio === este) {
+          salirCine();
+          restaurarReproductor();
+        }
+      });
+      if (!este.paused) entrarCine();
+    }
     medio.focus({ preventScroll: true });
   }
 
@@ -56,13 +76,20 @@
      autorizados para reproducirlo con sonido cuando termine la animación. */
   function desbloquearSonido() {
     medio = crearMedio();
+    videoPedido = false;
     if (!medio.play) return;
+    const este = medio;
     desbloqueando = true;
-    reproductor.prepend(medio);
-    medio.play()
-      .then(() => { medio.pause(); medio.currentTime = 0; })
+    reproductor.prepend(este);
+    este.play()
+      .then(() => {
+        // Con red lenta este primer arranque puede resolverse cuando el video ya debía estar corriendo
+        if (videoPedido || medio !== este) return;
+        este.pause();
+        este.currentTime = 0;
+      })
       .catch(() => {})
-      .finally(() => { desbloqueando = false; });
+      .finally(() => { if (medio === este && !videoPedido) desbloqueando = false; });
   }
 
   function restaurarReproductor() {
@@ -70,16 +97,26 @@
       medio.removeEventListener("play", entrarCine);
       medio.removeEventListener("pause", salirCine);
       medio.removeEventListener("ended", alTerminarVideo);
+      medio.removeEventListener("error", alFallarVideo);
       medio.pause();
     }
     medio = null;
     enCine = false;
+    videoPedido = false;
+    desbloqueando = false;
     reproductor.replaceChildren(poster);
   }
 
   function alTerminarVideo() {
     salirCine();
     restaurarReproductor();
+  }
+
+  function alFallarVideo() {
+    desbloqueando = false;
+    salirCine();
+    restaurarReproductor();
+    reproductor.append(aviso);
   }
 
   function entrarCine() {
@@ -300,7 +337,7 @@
     const tl = gsap.timeline({ onComplete: () => finalizar() });
 
     // Estrellas y sol que sale por detrás de las siluetas
-    tl.fromTo(".estrella", { scale: .4 }, { scale: 1, duration: .7, ease: "sine.inOut", stagger: { each: .012, from: "random" }, repeat: 3, yoyo: true }, 0)
+    tl.fromTo(".estrella", { scale: .4 }, { scale: 1, duration: .7, ease: "sine.inOut", stagger: { each: .01, from: "random", repeat: 2, yoyo: true } }, 0)
       .fromTo(".sol-salida", { yPercent: 118 }, { yPercent: 0, duration: 1.9, ease: "power2.out" }, .25)
       .fromTo(".halo-claro", { autoAlpha: 0, scale: .45 }, { autoAlpha: .32, scale: 1, duration: 1.7, ease: "power2.out" }, .55)
       .fromTo(".halo-rosa", { autoAlpha: 0, scale: .45 }, { autoAlpha: .22, scale: 1, duration: 1.9, ease: "power2.out" }, .75)
@@ -431,7 +468,7 @@
       const nx = (e.clientX / innerWidth) * 2 - 1;
       const ny = (e.clientY / innerHeight) * 2 - 1;
       movedores.forEach((m) => { m.x(-nx * m.cuanto); m.y(-ny * m.cuanto * .55); });
-      if (linea && linea.progress() === 1 && !enCine) {
+      if ((!linea || linea.progress() === 1) && !enCine) {
         giroY(nx * 3);
         giroX(-ny * 2.2);
         bloqueX(nx * 5);
@@ -525,28 +562,58 @@
     } catch (e) { /* si falla, se queda la imagen y entra completa */ }
   }
 
-  function precargar() {
-    const fondos = pantallaAncha.matches ? ["fronda.webp"] : ["m-fronda-izq.webp", "m-fronda-der.webp"];
-    const extras = [...fondos, "reja.webp", "baldosa.webp", "sol-disco.webp", "papel.webp",
-      "hoja-monstera.webp", "hoja-agave.webp", "hoja-hojas.webp", "hoja-arbusto.webp", "hoja-flor.webp"]
-      .map((nombre) => { const im = new Image(); im.src = `assets/${nombre}`; return im; });
-    const imagenes = [...$$("img").filter((im) => im.loading !== "lazy"), ...extras];
-    const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+  const RECURSOS_INTRO = {
+    rejas: ["reja.webp", "baldosa.webp"],
+    amanecer: ["sol-disco.webp"],
+    selva: ["hoja-monstera.webp", "hoja-agave.webp", "hoja-hojas.webp", "hoja-arbusto.webp", "hoja-flor.webp"],
+  };
+  const LIMITE_CARGA_MS = 15000;
+
+  const pedirImagen = (nombre) => {
+    const im = new Image();
+    im.src = `assets/${nombre}`;
+    return im;
+  };
+
+  // Devuelve true si la escena y la intro alcanzaron a cargar dentro del límite
+  function precargar(intro) {
+    const frondas = pantallaAncha.matches ? ["fronda.webp"] : ["m-fronda-izq.webp", "m-fronda-der.webp"];
+    const extras = [...frondas, "papel.webp", ...RECURSOS_INTRO[intro]].map(pedirImagen);
+    const enPagina = $$("img").filter((im) => im.loading !== "lazy" && (intro === "amanecer" || !im.classList.contains("noche")));
+    const tareas = [...[...enPagina, ...extras].map((im) => im.decode()), incrustarLockup(), document.fonts.ready];
+    let hechas = 0;
+    const avance = (p) => Promise.resolve(p).catch(() => {}).finally(() => {
+      hechas += 1;
+      raiz.style.setProperty("--carga", hechas / tareas.length);
+    });
     return Promise.race([
-      Promise.all([...imagenes.map((im) => im.decode().catch(() => {})), incrustarLockup(), document.fonts.ready]),
-      espera(6000),
+      Promise.all(tareas.map(avance)).then(() => true),
+      new Promise((r) => setTimeout(() => r(false), LIMITE_CARGA_MS)),
     ]);
   }
 
-  precargar().then(() => {
+  // Con red muy lenta no se anima sobre pantallas vacías: se entra directo a la página
+  function entrarSinIntro() {
+    raiz.classList.remove("en-intro");
+    ctx = gsap.context(() => {
+      ambiente();
+      activarParallax();
+    });
+  }
+
+  const pedida = new URLSearchParams(location.search).get("intro");
+  const introInicial = INTROS[pedida] ? pedida : "rejas";
+
+  precargar(introInicial).then((completo) => {
     raiz.classList.add("listo");
-    const pedida = new URLSearchParams(location.search).get("intro");
+    Object.keys(RECURSOS_INTRO).filter((n) => n !== introInicial).forEach((n) => RECURSOS_INTRO[n].forEach(pedirImagen));
     // Quien pidió reducir el movimiento ve la página completa, sin intro; los botones siguen disponibles
     if (sinMovimiento) {
       raiz.classList.remove("en-intro");
       return;
     }
-    iniciar(INTROS[pedida] ? pedida : "rejas");
+    if (completo) iniciar(introInicial);
+    else entrarSinIntro();
   });
 
   window.__landing = { get linea() { return linea; }, iniciar };

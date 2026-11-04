@@ -11,13 +11,13 @@
   <link rel="preload" href="assets/poppins-200i.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/poppins-500i.woff2" as="font" type="font/woff2" crossorigin>
   <script>
-    // Sin JavaScript la página se ve completa y sin intro. El temporizador evita una pantalla vacía si algo falla.
+    // Sin JavaScript la página se ve completa y sin intro. El temporizador evita una pantalla vacía si el script no llega.
     document.documentElement.classList.add("con-js");
-    setTimeout(function () { document.documentElement.classList.add("listo"); }, 7000);
+    window.__seguro = setTimeout(function () { document.documentElement.classList.add("listo"); }, 20000);
   </script>
   <link rel="stylesheet" href="assets/estilos.css">
   <script src="assets/vendor/gsap.min.js" defer></script>
-  <script src="assets/pagina.js" defer></script>
+  <script src="assets/pagina.js" defer onerror="document.documentElement.classList.add('listo')"></script>
 </head>
 <body>
   <main class="portada">
@@ -29,11 +29,11 @@
       <div class="halo halo-rosa"></div>
       <div class="halo halo-claro"></div>
       <picture>
-        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-sol.webp">
+        <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-sol.webp">
         <img class="sol-salida" src="assets/m-sol.webp" alt="">
       </picture>
       <picture>
-        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-noche.webp">
+        <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-noche.webp">
         <img class="noche" src="assets/m-noche.webp" alt="">
       </picture>
 
@@ -41,21 +41,21 @@
         <div class="cielo"></div>
         <div class="capa capa-sol">
           <picture>
-            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-sol.webp">
+            <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-sol.webp">
             <img src="assets/m-sol.webp" alt="" decoding="sync">
           </picture>
         </div>
         <div class="fronda fronda-izquierda"></div>
         <div class="capa capa-fondo">
           <picture>
-            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-fondo.webp">
+            <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-fondo.webp">
             <img src="assets/m-fondo.webp" alt="" decoding="sync">
           </picture>
         </div>
         <div class="suelo"></div>
         <div class="capa capa-medio">
           <picture>
-            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-medio.webp">
+            <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-medio.webp">
             <img src="assets/m-medio.webp" alt="" decoding="sync">
           </picture>
         </div>
@@ -68,14 +68,14 @@
         </div>
         <div class="capa capa-cerca">
           <picture>
-            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-cerca.webp">
+            <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-cerca.webp">
             <img src="assets/m-cerca.webp" alt="" decoding="sync">
           </picture>
         </div>
         <div class="capa capa-hamaca"><img src="assets/d-hamaca.webp" alt="" loading="lazy" decoding="sync"></div>
         <div class="capa capa-frente">
           <picture>
-            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-frente.webp">
+            <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/d-frente.webp">
             <img src="assets/m-frente.webp" alt="" decoding="sync">
           </picture>
         </div>
@@ -119,7 +119,7 @@
         <h1>Structural Heart <b>2027 Kick-Off</b></h1>
         <span class="separador" aria-hidden="true"></span>
         <picture class="frase">
-          <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/frase-linea.svg" width="1272" height="84">
+          <source media="(min-width: 480px) and (min-aspect-ratio: 1/1)" srcset="assets/frase-linea.svg" width="1272" height="84">
           <img src="assets/frase.svg" alt="Passion to lead. Power to win" width="678" height="177">
         </picture>
         <img class="emblema" src="assets/emblema.webp" alt="" width="695" height="433" loading="lazy">
