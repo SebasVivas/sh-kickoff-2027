@@ -122,7 +122,7 @@
   }
 
   function entrarCine() {
-    if (desbloqueando || !hayGsap) return;
+    if (desbloqueando || !hayGsap || enCine) return;
     enCine = true;
     const aplicar = () => {
       gsap.to(".atenuar", { autoAlpha: .72, duration: .7, ease: "power2.out", overwrite: "auto" });
@@ -530,6 +530,7 @@
     limpiezas.forEach((f) => f());
     limpiezas = [];
     if (ctx) ctx.revert();
+    gsap.set([".atenuar", marco], { clearProps: "all" });
     restaurarReproductor();
     introActual = nombre;
     $$(".revision button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.intro === nombre)));
