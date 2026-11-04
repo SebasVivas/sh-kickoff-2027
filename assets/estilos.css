@@ -1,0 +1,310 @@
+/* Paleta y tipografía entregadas con el KV */
+:root {
+  --cielo: #cee9f4;
+  --crema: #fdf0d2;
+  --azul: #272c61;
+  --verde: #025047;
+  --rosa: #ea528b;
+  --borde: 16px;
+  --salida: cubic-bezier(.2, .7, .2, 1);
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("poppins-200i.woff2") format("woff2");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("poppins-500i.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--crema) url("papel.webp") center top / 984px 552px;
+  color: var(--azul);
+  font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
+}
+
+img, svg, video, iframe { display: block; }
+img { max-width: 100%; height: auto; }
+
+/* ---------- Celular y tablet vertical: el KV tal cual, de arriba hacia abajo ---------- */
+.portada {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+
+.escena { position: relative; width: 100%; }
+.escena img { width: 100%; }
+.fronda, .aves { display: none; }
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* El lockup va sobre el cielo, en la misma proporción del KV */
+.merida {
+  position: absolute;
+  top: 11vw;
+  left: 50%;
+  width: 36vw;
+  margin-left: -18vw;
+}
+
+.marco-video {
+  position: relative;
+  width: min(100% - var(--borde) * 2 - 8px, 720px);
+  margin-top: -9vw;
+}
+
+.identidad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--borde);
+  text-align: center;
+}
+
+.abbott { width: min(50vw, 280px); margin-top: 44px; }
+
+h1 {
+  margin: 20px 0 0;
+  font-size: clamp(17px, 4.7vw, 30px);
+  font-weight: 200;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+h1 b { font-weight: 500; }
+
+.separador {
+  width: 18vw;
+  max-width: 120px;
+  height: 3px;
+  margin-top: 24px;
+  background: var(--rosa);
+}
+
+.frase { display: block; width: min(68vw, 420px); margin-top: 24px; }
+.frase img { width: 100%; }
+.emblema { width: min(36vw, 200px); margin-top: 32px; }
+
+/* ---------- Reproductor ---------- */
+/* Bloque rosa desplazado: el desfase de tinta de la risografía con la que está hecho el KV */
+.marco-video::before {
+  content: "";
+  position: absolute;
+  inset: 8px -8px -8px 8px;
+  background: var(--rosa);
+}
+
+.reproductor {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--azul);
+}
+
+.marco-video[data-formato="vertical"] {
+  width: min(100% - var(--borde) * 2 - 8px, (100svh - 48px) * 9 / 16);
+}
+
+.marco-video[data-formato="vertical"] .reproductor { aspect-ratio: 9 / 16; }
+
+.reproductor video,
+.reproductor iframe,
+.reproducir {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.reproductor video { background: var(--azul); }
+
+.reproducir {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+}
+
+.reproducir img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--salida);
+}
+
+.icono-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(68px, 14%, 104px);
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--rosa);
+  transform: translate(-50%, -50%);
+  transition: transform .25s var(--salida);
+}
+
+.icono-play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--rosa);
+  animation: latido 2.4s ease-out infinite;
+  z-index: -1;
+}
+
+.icono-play svg { position: relative; width: 100%; height: 100%; fill: var(--crema); }
+
+.reproducir:hover img { transform: scale(1.025); }
+.reproducir:hover .icono-play { transform: translate(-50%, -50%) scale(1.1); }
+.reproducir:active .icono-play { transform: translate(-50%, -50%) scale(.95); }
+.reproducir:focus-visible { outline: 4px solid var(--verde); outline-offset: 4px; }
+
+/* ---------- Computador: las mismas piezas abiertas a lado y lado del video ---------- */
+@media (min-width: 640px) and (min-aspect-ratio: 6/5) {
+  .portada {
+    /* Todo el primer plano escala como un afiche: 1 unidad = 1/1000 del alto en 16:10 */
+    --u: min(100vw / 1600, 100svh / 1000);
+    height: 100svh;
+    padding: 0;
+  }
+
+  /* Escena anclada abajo y al centro; recorta por los lados, como background-size: cover */
+  .escena {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: max(100vw, 200svh);
+    aspect-ratio: 2 / 1;
+    transform: translateX(-50%);
+    animation: asentar 1.8s var(--salida) both;
+  }
+
+  .escena img { height: 100%; }
+
+  .fronda, .aves {
+    display: block;
+    position: absolute;
+    background: center / contain no-repeat;
+  }
+
+  .fronda {
+    top: -2.5%;
+    aspect-ratio: 900 / 513;
+    background: none;
+  }
+
+  .fronda::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("fronda.webp") center / contain no-repeat;
+    transform-origin: 8% 10%;
+    animation: mecer 8s ease-in-out infinite alternate;
+  }
+
+  .fronda-izquierda { left: -3%; width: 36%; }
+
+  /* El volteo va en el contenedor y el vaivén en la capa interna, para que el pivote siga en la esquina */
+  .fronda-derecha { right: -2%; width: 29%; transform: scaleX(-1); }
+  .fronda-derecha::before { animation-duration: 9.5s; animation-delay: -3s; }
+
+  .aves {
+    top: 21%;
+    left: 74.5%;
+    width: 7.5%;
+    aspect-ratio: 420 / 381;
+    background-image: url("aves.webp");
+    animation: volar 11s ease-in-out infinite alternate;
+  }
+
+  .contenido {
+    position: relative;
+    justify-content: center;
+    height: 100%;
+    padding-bottom: calc(var(--u) * 6);
+  }
+
+  .merida {
+    position: static;
+    width: calc(var(--u) * 290);
+    margin: 0 0 calc(var(--u) * 16);
+  }
+
+  .marco-video {
+    width: calc(var(--u) * 900);
+    margin: 0;
+  }
+
+  .marco-video[data-formato="vertical"] { width: calc(var(--u) * 280); }
+
+  .marco-video::before { inset: calc(var(--u) * 10) calc(var(--u) * -10) calc(var(--u) * -10) calc(var(--u) * 10); }
+
+  .icono-play { width: calc(var(--u) * 104); }
+
+  .identidad { padding: 0; }
+
+  .abbott {
+    width: calc(var(--u) * 226);
+    margin-top: calc(var(--u) * 38);
+  }
+
+  h1 {
+    margin-top: calc(var(--u) * 16);
+    font-size: max(12px, calc(var(--u) * 29));
+    line-height: 1.2;
+  }
+
+  .separador { display: none; }
+
+  .frase {
+    width: calc(var(--u) * 540);
+    margin-top: calc(var(--u) * 20);
+  }
+
+  .emblema { display: none; }
+}
+
+/* ---------- Movimiento ---------- */
+.aparece { animation: subir .8s var(--salida) both; }
+.merida.aparece { animation-delay: .1s; }
+.marco-video.aparece { animation-delay: .25s; }
+.abbott.aparece { animation-delay: .45s; }
+h1.aparece { animation-delay: .53s; }
+.separador.aparece { animation-delay: .6s; }
+.frase.aparece { animation-delay: .67s; }
+.emblema.aparece { animation-delay: .75s; }
+
+@keyframes subir { from { opacity: 0; translate: 0 22px; } to { opacity: 1; translate: 0 0; } }
+@keyframes asentar { from { scale: 1.035; } to { scale: 1; } }
+@keyframes latido { 0% { transform: scale(1); opacity: .55; } 80%, 100% { transform: scale(1.55); opacity: 0; } }
+@keyframes mecer { from { transform: rotate(-.9deg); } to { transform: rotate(1.3deg); } }
+@keyframes volar { from { transform: translate(0, 0); } to { transform: translate(-3.5%, 5%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .icono-play::before { display: none; }
+}

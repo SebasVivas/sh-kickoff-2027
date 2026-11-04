@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Structural Heart 2027 Kick-Off | Abbott</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#cee9f4">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/poppins-200i.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/poppins-500i.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/estilos.css">
+  <script src="assets/pagina.js" defer></script>
+</head>
+<body>
+  <main class="portada">
+    <div class="escena" aria-hidden="true">
+      <picture>
+        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/escena-escritorio.webp" width="2400" height="1200">
+        <img src="assets/escena-movil.webp" alt="" width="1400" height="1234" fetchpriority="high">
+      </picture>
+      <div class="fronda fronda-izquierda"></div>
+      <div class="fronda fronda-derecha"></div>
+      <div class="aves"></div>
+    </div>
+
+    <div class="contenido">
+      <img class="merida aparece" src="assets/merida.svg" alt="Mérida, Yucatán. See you there!" width="385" height="202">
+
+      <!--
+        Para cambiar el video solo se editan estos atributos:
+        - Archivo propio:     data-tipo="archivo" data-fuente="video/nombre.mp4"
+        - Cloudflare Stream:  data-tipo="stream"  data-cliente="customer-XXXX" data-fuente="ID_DEL_VIDEO"
+        - YouTube:            data-tipo="youtube" data-fuente="ID_DEL_VIDEO"
+        data-formato: "horizontal" (16:9) o "vertical" (9:16).
+      -->
+      <div class="marco-video aparece" data-formato="horizontal">
+        <div class="reproductor" data-tipo="archivo" data-fuente="video/video-prueba.mp4">
+          <button class="reproducir" type="button" aria-label="Play video">
+            <img src="assets/poster.webp" alt="" width="1280" height="720">
+            <span class="icono-play" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M17 11.5v25L38 24z"/></svg>
+            </span>
+          </button>
+          <noscript>
+            <video src="video/video-prueba.mp4" poster="assets/poster.webp" controls playsinline preload="none"></video>
+          </noscript>
+        </div>
+      </div>
+
+      <div class="identidad">
+        <img class="abbott aparece" src="assets/abbott.svg" alt="Abbott" width="418" height="74">
+        <h1 class="aparece">Structural Heart <b>2027 Kick-Off</b></h1>
+        <span class="separador aparece" aria-hidden="true"></span>
+        <picture class="frase aparece">
+          <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/frase-linea.svg" width="1272" height="84">
+          <img src="assets/frase.svg" alt="Passion to lead. Power to win" width="678" height="177">
+        </picture>
+        <img class="emblema aparece" src="assets/emblema.webp" alt="" width="695" height="433" loading="lazy">
+      </div>
+    </div>
+  </main>
+</body>
+</html>
