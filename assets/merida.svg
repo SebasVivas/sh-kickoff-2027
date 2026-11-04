@@ -66,35 +66,35 @@
 <g id="glyph-4-5">
 <path d="M 9.65 -0.06 C 8.98 -0.48 8.75 -1.20 8.75 -2.03 C 8.75 -3.07 9.10 -4.31 9.35 -5.20 L 15.56 -25.23 L 42.39 -25.42 L 45.26 -14.43 C 46.75 -9.40 47.09 -5.46 47.10 -2.87 C 47.10 -1.78 47.07 -0.95 47.03 -0.37 L 70.17 -0.53 C 68.96 -2.40 66.03 -7.35 64.06 -14.56 L 51.59 -61.03 C 46.57 -79.21 43.34 -81.79 26.53 -81.68 L 26.06 -81.68 C 25.18 -81.67 23.35 -81.71 22.37 -82.17 C 22.37 -82.17 23.68 -78.65 23.71 -74.92 C 23.71 -73.67 23.57 -72.42 23.21 -71.28 L 3.21 -7.28 C 1.89 -3.43 0 0 0 0 Z M 41.59 -28.43 L 16.53 -28.25 L 30.01 -72 Z M 41.59 -28.43 " />
 </g>
-</defs><g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+</defs><g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-0" x="372.30" y="269.45" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-1" x="427.50" y="269.06" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-2" x="483.17" y="268.68" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-3" x="540.79" y="268.28" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-4" x="598.29" y="267.88" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-5" x="649.37" y="267.52" />
 </g>
-<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1">
+<g fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" class="letra-y">
 <use xlink:href="#glyph-2-6" x="706.87" y="267.12" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="lema">
 <use xlink:href="#glyph-3-0" x="463.43" y="306.42" />
 <use xlink:href="#glyph-3-1" x="477.99" y="306.42" />
 <use xlink:href="#glyph-3-1" x="493.30" y="306.42" />
 <use xlink:href="#glyph-3-2" x="508.62" y="306.42" />
 <use xlink:href="#glyph-3-3" x="515.08" y="306.42" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="lema">
 <use xlink:href="#glyph-3-4" x="529.82" y="306.42" />
 <use xlink:href="#glyph-3-5" x="549.08" y="306.42" />
 <use xlink:href="#glyph-3-2" x="567.07" y="306.42" />
@@ -105,24 +105,24 @@
 <use xlink:href="#glyph-3-1" x="638.16" y="306.42" />
 <use xlink:href="#glyph-3-9" x="653.48" y="306.42" />
 </g>
-<path fill-rule="nonzero" fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" d="M 365.00 279.85 L 746.17 279.85 L 746.17 276.45 L 365.00 276.45 Z M 365.00 279.85 " />
-<path fill-rule="nonzero" fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" d="M 365.00 319.62 L 746.17 319.62 L 746.17 316.22 L 365.00 316.22 Z M 365.00 319.62 " />
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<path fill-rule="nonzero" fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" d="M 365.00 279.85 L 746.17 279.85 L 746.17 276.45 L 365.00 276.45 Z M 365.00 279.85 " class="regla" />
+<path fill-rule="nonzero" fill="rgb(91.76%, 32.15%, 54.51%)" fill-opacity="1" d="M 365.00 319.62 L 746.17 319.62 L 746.17 316.22 L 365.00 316.22 Z M 365.00 319.62 " class="regla" />
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-0" x="372.39" y="225.92" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-1" x="454.66" y="225.34" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-2" x="517.41" y="224.91" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-3" x="586.34" y="224.43" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-4" x="614.08" y="224.24" />
 </g>
-<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1">
+<g fill="rgb(0.78%, 31.37%, 28.23%)" fill-opacity="1" class="letra-m">
 <use xlink:href="#glyph-4-5" x="669.57" y="223.85" />
 </g>
 </svg>

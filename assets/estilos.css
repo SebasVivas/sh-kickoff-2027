@@ -5,8 +5,11 @@
   --azul: #272c61;
   --verde: #025047;
   --rosa: #ea528b;
+  --noche: #0d1034;
+  --noche-suelo: #464e94;
   --borde: 16px;
   --salida: cubic-bezier(.2, .7, .2, 1);
+  --horizonte: 67.65%;
 }
 
 @font-face {
@@ -28,6 +31,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
+html.en-intro, html.en-intro body { overflow: hidden; }
 
 body {
   margin: 0;
@@ -38,6 +42,22 @@ body {
 
 img, svg, video, iframe { display: block; }
 img { max-width: 100%; height: auto; }
+picture { display: contents; }
+
+/* Mientras cargan las capas */
+html.con-js:not(.listo) .portada { visibility: hidden; }
+html.con-js:not(.listo) body::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px;
+  border-radius: 50%;
+  background: var(--rosa);
+  animation: cargando .9s ease-in-out infinite alternate;
+}
 
 /* ---------- Celular y tablet vertical: el KV tal cual, de arriba hacia abajo ---------- */
 .portada {
@@ -47,32 +67,174 @@ img { max-width: 100%; height: auto; }
   padding-bottom: 40px;
 }
 
-.escena { position: relative; width: 100%; }
-.escena img { width: 100%; }
-.fronda, .aves { display: none; }
+.velo-noche {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  visibility: hidden;
+  background: var(--noche-suelo);
+}
 
+.escena {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1400 / 1234;
+  scale: 1.03;
+  transform-origin: 50% 50%;
+}
+
+.camara-escena, .mundo, .capa { position: absolute; inset: 0; }
+.capa img { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.cielo {
+  position: absolute;
+  z-index: 0;
+  inset: -60% -30% calc(100% - var(--horizonte)) -30%;
+  background: var(--cielo);
+}
+
+.suelo {
+  position: absolute;
+  z-index: 2;
+  inset: var(--horizonte) -30% 0 -30%;
+  background: var(--crema) url("papel.webp") center top / 984px 552px;
+}
+
+.capa-sol { z-index: 1; }
+.fronda-izquierda { z-index: 2; }
+.capa-fondo { z-index: 3; }
+.capa-medio { z-index: 4; }
+.aves { z-index: 5; }
+.capa-cerca { z-index: 6; }
+.capa-hamaca { z-index: 7; display: none; }
+.capa-frente { z-index: 8; }
+.fronda-derecha { z-index: 9; }
+
+.capa-sol img, .sol-salida {
+  position: absolute;
+  inset: auto;
+  top: 47.73%;
+  left: 29.06%;
+  width: 35.06%;
+  height: auto;
+  aspect-ratio: 631 / 419;
+}
+
+/* Capas de la noche (opción 2): quedan ocultas hasta que esa intro las muestra */
+.noche-cielo {
+  position: absolute;
+  inset: -60% -30% calc(100% - var(--horizonte)) -30%;
+  overflow: hidden;
+  visibility: hidden;
+  background: var(--noche);
+}
+
+.noche, .sol-salida, .halo { visibility: hidden; }
+.noche { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.estrella {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--crema);
+}
+
+.halo {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.halo-rosa { background: var(--rosa); }
+.halo-claro { background: #f6c76a; }
+
+/* Frondas */
+.fronda { position: absolute; }
+
+.fronda-izquierda::before, .fronda-espejo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: center / 100% 100% no-repeat;
+  transform-origin: 0% 0%;
+  animation: mecer 8s ease-in-out infinite alternate;
+}
+
+.fronda-izquierda {
+  top: .13%;
+  left: 0;
+  width: 33.28%;
+  aspect-ratio: 599 / 676;
+}
+
+.fronda-izquierda::before { background-image: url("m-fronda-izq.webp"); }
+
+.fronda-derecha {
+  top: .13%;
+  left: 74%;
+  width: 26%;
+  aspect-ratio: 468 / 495;
+}
+
+.fronda-espejo { position: absolute; inset: 0; }
+
+.fronda-espejo::before {
+  background-image: url("m-fronda-der.webp");
+  transform-origin: 100% 0%;
+  animation-duration: 9.5s;
+  animation-delay: -3s;
+}
+
+/* Aves */
+.aves {
+  position: absolute;
+  top: 40.16%;
+  left: 71%;
+  width: 9.94%;
+  aspect-ratio: 932 / 846;
+}
+
+.ave { position: absolute; height: auto; max-width: none; }
+
+.ave-viajera {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: clamp(34px, 3.4vw, 64px);
+  height: auto;
+  visibility: hidden;
+}
+
+/* Primer plano */
 .contenido {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* El lockup va sobre el cielo, en la misma proporción del KV */
 .merida {
   position: absolute;
+  z-index: 3;
   top: 11vw;
   left: 50%;
   width: 36vw;
+  height: auto;
   margin-left: -18vw;
+  overflow: visible;
 }
 
 .marco-video {
   position: relative;
+  z-index: 5;
   width: min(100% - var(--borde) * 2 - 8px, 720px);
   margin-top: -9vw;
 }
 
 .identidad {
+  position: relative;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,8 +269,7 @@ h1 b { font-weight: 500; }
 
 /* ---------- Reproductor ---------- */
 /* Bloque rosa desplazado: el desfase de tinta de la risografía con la que está hecho el KV */
-.marco-video::before {
-  content: "";
+.bloque-riso {
   position: absolute;
   inset: 8px -8px -8px 8px;
   background: var(--rosa);
@@ -137,6 +298,7 @@ h1 b { font-weight: 500; }
 }
 
 .reproductor video { background: var(--azul); }
+.reproductor video:focus { outline: none; }
 
 .reproducir {
   display: block;
@@ -146,11 +308,11 @@ h1 b { font-weight: 500; }
   cursor: pointer;
 }
 
-.reproducir img {
+.reproducir > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .6s var(--salida);
+  transition: scale .6s var(--salida);
 }
 
 .icono-play {
@@ -159,32 +321,266 @@ h1 b { font-weight: 500; }
   left: 50%;
   width: clamp(68px, 14%, 104px);
   aspect-ratio: 1;
-  margin: 0;
   border-radius: 50%;
   background: var(--rosa);
-  transform: translate(-50%, -50%);
-  transition: transform .25s var(--salida);
+  translate: -50% -50%;
+  transition: scale .25s var(--salida);
 }
 
 .icono-play::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: -1;
   border-radius: 50%;
   background: var(--rosa);
   animation: latido 2.4s ease-out infinite;
-  z-index: -1;
 }
 
 .icono-play svg { position: relative; width: 100%; height: 100%; fill: var(--crema); }
 
-.reproducir:hover img { transform: scale(1.025); }
-.reproducir:hover .icono-play { transform: translate(-50%, -50%) scale(1.1); }
-.reproducir:active .icono-play { transform: translate(-50%, -50%) scale(.95); }
+.reproducir:hover > img { scale: 1.025; }
+.reproducir:hover .icono-play { scale: 1.1; }
+.reproducir:active .icono-play { scale: .95; }
 .reproducir:focus-visible { outline: 4px solid var(--verde); outline-offset: 4px; }
+
+/* Modo cine: cuando el video suena, la escena se apaga */
+.atenuar {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  visibility: hidden;
+  background: var(--noche);
+}
+
+/* Sol que se convierte en el video (opción 2) */
+.orbe, .onda {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  visibility: hidden;
+  border-radius: 50%;
+}
+
+.orbe { background: url("sol-disco.webp") center / cover; }
+.onda { border: 4px solid #f6c76a; }
+
+/* ---------- Opción 1: las rejas ---------- */
+.rejas {
+  --baldosa: min(30svh, 56vw);
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: none;
+  overflow: hidden;
+}
+
+.rejas-marco {
+  position: absolute;
+  inset: -2%;
+  perspective: 1500px;
+}
+
+.hoja-reja {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: rgba(2, 80, 71, .16);
+}
+
+.hoja-reja.izq { left: 0; transform-origin: 0% 50%; }
+.hoja-reja.der { right: 0; transform-origin: 100% 50%; }
+
+.hoja-reja::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("reja.webp") right center / auto 100% repeat-x;
+}
+
+.hoja-reja.der::before { transform: scaleX(-1); }
+
+.media-baldosa {
+  position: absolute;
+  top: 50%;
+  width: calc(var(--baldosa) / 2);
+  height: var(--baldosa);
+  margin-top: calc(var(--baldosa) / -2);
+  background: url("baldosa.webp") no-repeat;
+  background-size: var(--baldosa) var(--baldosa);
+}
+
+.izq .media-baldosa { right: 0; background-position: left center; }
+.der .media-baldosa { left: 0; background-position: right center; }
+
+.letrero {
+  position: absolute;
+  bottom: calc(50% + var(--baldosa) / 2 + 22px);
+  left: 50%;
+  width: min(84vw, 440px);
+  padding: clamp(14px, 2.4svh, 24px) 20px;
+  background: var(--crema) url("papel.webp") center / 984px 552px;
+  text-align: center;
+  translate: -50% 0;
+}
+
+.letrero img { width: min(44vw, 210px); margin: 0 auto; }
+
+.letrero p {
+  margin: 10px 0 0;
+  font-size: clamp(14px, min(2.4svh, 4.2vw), 21px);
+  white-space: nowrap;
+  font-weight: 200;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.letrero b { font-weight: 500; }
+
+.abrir {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--baldosa);
+  height: var(--baldosa);
+  margin: calc(var(--baldosa) / -2) 0 0 calc(var(--baldosa) / -2);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--crema);
+  font: inherit;
+  cursor: pointer;
+}
+
+.abrir-anillo {
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--rosa);
+  animation: latido-baldosa 2.2s ease-out infinite;
+}
+
+.abrir-texto {
+  position: absolute;
+  top: calc(100% + 22px);
+  left: 50%;
+  padding: 14px 28px;
+  background: var(--azul);
+  font-size: clamp(16px, 2.5svh, 20px);
+  font-weight: 500;
+  font-style: italic;
+  white-space: nowrap;
+  translate: -50% 0;
+  transition: background-color .2s, scale .25s var(--salida);
+}
+
+.abrir:hover .abrir-texto { background: var(--verde); scale: 1.05; }
+.abrir:active .abrir-texto { scale: .97; }
+.abrir:focus-visible { outline: none; }
+.abrir:focus-visible .abrir-texto { outline: 3px solid var(--crema); outline-offset: 3px; }
+
+/* ---------- Opción 3: túnel de hojas ---------- */
+.vuelo {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: none;
+  overflow: hidden;
+  perspective: 700px;
+  perspective-origin: 50% var(--vy, 50%);
+}
+
+.tunel {
+  position: absolute;
+  top: var(--vy, 50%);
+  left: 50%;
+  width: 240vmax;
+  height: 240vmax;
+  margin: -120vmax 0 0 -120vmax;
+  border: 117vmax solid var(--verde);
+  border-radius: 50%;
+}
+
+.camara {
+  position: absolute;
+  top: var(--vy, 50%);
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.hoja-vuelo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  max-width: none;
+}
+
+/* ---------- Panel de revisión (se quita con la versión final) ---------- */
+.revision {
+  position: fixed;
+  top: 50%;
+  right: 14px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 168px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  translate: 0 -50%;
+}
+
+.revision[hidden], html:not(.con-js) .revision { display: none; }
+
+.revision p {
+  margin: 0 0 2px;
+  padding: 6px 12px;
+  background: var(--crema);
+  color: var(--azul);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.revision button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 0;
+  background: var(--azul);
+  color: var(--crema);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s, translate .2s var(--salida);
+}
+
+.revision b { font-size: 18px; }
+.revision button:hover { background: var(--verde); translate: -4px 0; }
+.revision button[aria-pressed="true"] { background: var(--rosa); color: #17193f; }
+.revision button:focus-visible { outline: 3px solid var(--crema); outline-offset: 2px; }
+
+@media (max-width: 639px) {
+  .revision {
+    top: calc(8px + env(safe-area-inset-top));
+    right: 8px;
+    width: 46px;
+    translate: none;
+  }
+
+  .revision p, .revision span { display: none; }
+  .revision button { justify-content: center; padding: 0; }
+}
 
 /* ---------- Computador: las mismas piezas abiertas a lado y lado del video ---------- */
 @media (min-width: 640px) and (min-aspect-ratio: 6/5) {
+  :root { --horizonte: 59.67%; }
+
   .portada {
     /* Todo el primer plano escala como un afiche: 1 unidad = 1/1000 del alto en 16:10 */
     --u: min(100vw / 1600, 100svh / 1000);
@@ -195,51 +591,47 @@ h1 b { font-weight: 500; }
   /* Escena anclada abajo y al centro; recorta por los lados, como background-size: cover */
   .escena {
     position: absolute;
-    bottom: 0;
+    bottom: calc(var(--u) * -48); /* margen para que el follaje no muestre su corte al moverse con el mouse */
     left: 50%;
     width: max(100vw, 200svh);
     aspect-ratio: 2 / 1;
-    transform: translateX(-50%);
-    animation: asentar 1.8s var(--salida) both;
+    scale: 1.05;
+    transform-origin: 50% 100%;
+    translate: -50% 0;
   }
 
-  .escena img { height: 100%; }
+  .suelo { z-index: 3; inset: var(--horizonte) -30% -10% -30%; }
+  .capa-fondo { z-index: 2; }
+  .capa-hamaca { display: block; }
+  .fronda-izquierda, .fronda-derecha { z-index: 10; }
+  .aves { z-index: 9; }
 
-  .fronda, .aves {
-    display: block;
-    position: absolute;
-    background: center / contain no-repeat;
+  .capa-sol img, .sol-salida {
+    top: 30.83%;
+    left: 69.17%;
+    width: 18.75%;
+    aspect-ratio: 1;
   }
 
-  .fronda {
-    top: -2.5%;
-    aspect-ratio: 900 / 513;
-    background: none;
+  .capa-hamaca img {
+    inset: auto;
+    top: 60.3%;
+    left: 87.65%;
+    width: 18.87%;
+    height: auto;
+    max-width: none;
   }
 
-  .fronda::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("fronda.webp") center / contain no-repeat;
-    transform-origin: 8% 10%;
-    animation: mecer 8s ease-in-out infinite alternate;
-  }
-
+  .fronda-izquierda, .fronda-derecha { top: -2.5%; aspect-ratio: 900 / 513; }
   .fronda-izquierda { left: -3%; width: 36%; }
+  .fronda-derecha { right: -2%; left: auto; width: 29%; }
+  .fronda-izquierda::before { background-image: url("fronda.webp"); transform-origin: 8% 10%; }
 
-  /* El volteo va en el contenedor y el vaivén en la capa interna, para que el pivote siga en la esquina */
-  .fronda-derecha { right: -2%; width: 29%; transform: scaleX(-1); }
-  .fronda-derecha::before { animation-duration: 9.5s; animation-delay: -3s; }
+  /* El volteo va en una capa aparte y el vaivén en la interna, para que el pivote siga en la esquina */
+  .fronda-espejo { transform: scaleX(-1); }
+  .fronda-espejo::before { background-image: url("fronda.webp"); transform-origin: 8% 10%; }
 
-  .aves {
-    top: 21%;
-    left: 74.5%;
-    width: 7.5%;
-    aspect-ratio: 420 / 381;
-    background-image: url("aves.webp");
-    animation: volar 11s ease-in-out infinite alternate;
-  }
+  .aves { top: 21%; left: 74.5%; width: 7.5%; }
 
   .contenido {
     position: relative;
@@ -249,7 +641,9 @@ h1 b { font-weight: 500; }
   }
 
   .merida {
-    position: static;
+    position: relative;
+    top: auto;
+    left: auto;
     width: calc(var(--u) * 290);
     margin: 0 0 calc(var(--u) * 16);
   }
@@ -261,7 +655,7 @@ h1 b { font-weight: 500; }
 
   .marco-video[data-formato="vertical"] { width: calc(var(--u) * 280); }
 
-  .marco-video::before { inset: calc(var(--u) * 10) calc(var(--u) * -10) calc(var(--u) * -10) calc(var(--u) * 10); }
+  .bloque-riso { inset: calc(var(--u) * 10) calc(var(--u) * -10) calc(var(--u) * -10) calc(var(--u) * 10); }
 
   .icono-play { width: calc(var(--u) * 104); }
 
@@ -288,21 +682,11 @@ h1 b { font-weight: 500; }
   .emblema { display: none; }
 }
 
-/* ---------- Movimiento ---------- */
-.aparece { animation: subir .8s var(--salida) both; }
-.merida.aparece { animation-delay: .1s; }
-.marco-video.aparece { animation-delay: .25s; }
-.abbott.aparece { animation-delay: .45s; }
-h1.aparece { animation-delay: .53s; }
-.separador.aparece { animation-delay: .6s; }
-.frase.aparece { animation-delay: .67s; }
-.emblema.aparece { animation-delay: .75s; }
-
-@keyframes subir { from { opacity: 0; translate: 0 22px; } to { opacity: 1; translate: 0 0; } }
-@keyframes asentar { from { scale: 1.035; } to { scale: 1; } }
+/* ---------- Movimiento en CSS ---------- */
+@keyframes cargando { from { scale: .6; opacity: .4; } to { scale: 1.2; opacity: 1; } }
 @keyframes latido { 0% { transform: scale(1); opacity: .55; } 80%, 100% { transform: scale(1.55); opacity: 0; } }
+@keyframes latido-baldosa { 0% { transform: scale(1); opacity: .9; } 75%, 100% { transform: scale(1.22); opacity: 0; } }
 @keyframes mecer { from { transform: rotate(-.9deg); } to { transform: rotate(1.3deg); } }
-@keyframes volar { from { transform: translate(0, 0); } to { transform: translate(-3.5%, 5%); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

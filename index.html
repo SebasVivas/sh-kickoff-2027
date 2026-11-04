@@ -9,32 +9,97 @@
   <link rel="icon" href="data:,">
   <link rel="preload" href="assets/poppins-200i.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/poppins-500i.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Sin JavaScript la página se ve completa y sin intro. El temporizador evita una pantalla vacía si algo falla.
+    document.documentElement.classList.add("con-js");
+    setTimeout(function () { document.documentElement.classList.add("listo"); }, 7000);
+  </script>
   <link rel="stylesheet" href="assets/estilos.css">
+  <script src="assets/vendor/gsap.min.js" defer></script>
   <script src="assets/pagina.js" defer></script>
 </head>
 <body>
   <main class="portada">
+    <div class="velo-noche" aria-hidden="true"></div>
+
     <div class="escena" aria-hidden="true">
+      <div class="camara-escena">
+      <div class="noche-cielo"></div>
+      <div class="halo halo-rosa"></div>
+      <div class="halo halo-claro"></div>
       <picture>
-        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/escena-escritorio.webp" width="2400" height="1200">
-        <img src="assets/escena-movil.webp" alt="" width="1400" height="1234" fetchpriority="high">
+        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-sol.webp">
+        <img class="sol-salida" src="assets/m-sol.webp" alt="">
       </picture>
-      <div class="fronda fronda-izquierda"></div>
-      <div class="fronda fronda-derecha"></div>
-      <div class="aves"></div>
+      <picture>
+        <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-noche.webp">
+        <img class="noche" src="assets/m-noche.webp" alt="">
+      </picture>
+
+      <div class="mundo">
+        <div class="cielo"></div>
+        <div class="capa capa-sol">
+          <picture>
+            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-sol.webp">
+            <img src="assets/m-sol.webp" alt="">
+          </picture>
+        </div>
+        <div class="fronda fronda-izquierda"></div>
+        <div class="capa capa-fondo">
+          <picture>
+            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-fondo.webp">
+            <img src="assets/m-fondo.webp" alt="">
+          </picture>
+        </div>
+        <div class="suelo"></div>
+        <div class="capa capa-medio">
+          <picture>
+            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-medio.webp">
+            <img src="assets/m-medio.webp" alt="">
+          </picture>
+        </div>
+        <div class="aves">
+          <img class="ave" src="assets/ave1.webp" alt="" style="left:0%;top:66.67%;width:39.48%">
+          <img class="ave" src="assets/ave2.webp" alt="" style="left:25.75%;top:27.42%;width:28.33%">
+          <img class="ave" src="assets/ave3.webp" alt="" style="left:49.36%;top:78.01%;width:27.04%">
+          <img class="ave" src="assets/ave4.webp" alt="" style="left:57.94%;top:0%;width:34.76%">
+          <img class="ave" src="assets/ave5.webp" alt="" style="left:63.09%;top:45.86%;width:37.34%">
+        </div>
+        <div class="capa capa-cerca">
+          <picture>
+            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-cerca.webp">
+            <img src="assets/m-cerca.webp" alt="">
+          </picture>
+        </div>
+        <div class="capa capa-hamaca"><img src="assets/d-hamaca.webp" alt="" loading="lazy"></div>
+        <div class="capa capa-frente">
+          <picture>
+            <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/d-frente.webp">
+            <img src="assets/m-frente.webp" alt="">
+          </picture>
+        </div>
+        <div class="fronda fronda-derecha"><div class="fronda-espejo"></div></div>
+      </div>
+      </div>
     </div>
 
-    <div class="contenido">
-      <img class="merida aparece" src="assets/merida.svg" alt="Mérida, Yucatán. See you there!" width="385" height="202">
+    <img class="ave-viajera" src="assets/ave4.webp" alt="" aria-hidden="true">
+    <div class="atenuar" aria-hidden="true"></div>
+    <div class="orbe" aria-hidden="true"></div>
+    <div class="onda" aria-hidden="true"></div>
 
-      <!--
-        Para cambiar el video solo se editan estos atributos:
-        - Archivo propio:     data-tipo="archivo" data-fuente="video/nombre.mp4"
-        - Cloudflare Stream:  data-tipo="stream"  data-cliente="customer-XXXX" data-fuente="ID_DEL_VIDEO"
-        - YouTube:            data-tipo="youtube" data-fuente="ID_DEL_VIDEO"
-        data-formato: "horizontal" (16:9) o "vertical" (9:16).
-      -->
-      <div class="marco-video aparece" data-formato="horizontal">
+    <div class="contenido">
+      <img class="merida" src="assets/merida.svg" alt="Mérida, Yucatán. See you there!" width="385" height="202">
+
+      <div class="marco-video" data-formato="horizontal">
+        <span class="bloque-riso" aria-hidden="true"></span>
+        <!--
+          Para cambiar el video solo se editan estos atributos:
+          - Archivo propio:     data-tipo="archivo" data-fuente="video/nombre.mp4"
+          - Cloudflare Stream:  data-tipo="stream"  data-cliente="customer-XXXX" data-fuente="ID_DEL_VIDEO"
+          - YouTube:            data-tipo="youtube" data-fuente="ID_DEL_VIDEO"
+          data-formato (arriba): "horizontal" (16:9) o "vertical" (9:16).
+        -->
         <div class="reproductor" data-tipo="archivo" data-fuente="video/video-prueba.mp4">
           <button class="reproducir" type="button" aria-label="Play video">
             <img src="assets/poster.webp" alt="" width="1280" height="720">
@@ -49,16 +114,46 @@
       </div>
 
       <div class="identidad">
-        <img class="abbott aparece" src="assets/abbott.svg" alt="Abbott" width="418" height="74">
-        <h1 class="aparece">Structural Heart <b>2027 Kick-Off</b></h1>
-        <span class="separador aparece" aria-hidden="true"></span>
-        <picture class="frase aparece">
+        <img class="abbott" src="assets/abbott.svg" alt="Abbott" width="418" height="74">
+        <h1>Structural Heart <b>2027 Kick-Off</b></h1>
+        <span class="separador" aria-hidden="true"></span>
+        <picture class="frase">
           <source media="(min-width: 640px) and (min-aspect-ratio: 6/5)" srcset="assets/frase-linea.svg" width="1272" height="84">
           <img src="assets/frase.svg" alt="Passion to lead. Power to win" width="678" height="177">
         </picture>
-        <img class="emblema aparece" src="assets/emblema.webp" alt="" width="695" height="433" loading="lazy">
+        <img class="emblema" src="assets/emblema.webp" alt="" width="695" height="433" loading="lazy">
       </div>
     </div>
+
+    <!-- Opción 1: la reja del KV, cerrada. Abrirla es un clic real, así que el video puede arrancar con sonido. -->
+    <div class="rejas">
+      <div class="rejas-marco">
+        <div class="hoja-reja izq"><span class="media-baldosa"></span></div>
+        <div class="hoja-reja der"><span class="media-baldosa"></span></div>
+        <div class="letrero">
+          <img src="assets/abbott.svg" alt="Abbott" width="418" height="74">
+          <p>Structural Heart <b>2027 Kick-Off</b></p>
+        </div>
+        <button class="abrir" type="button">
+          <span class="abrir-anillo" aria-hidden="true"></span>
+          <span class="abrir-texto">Open the gate</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Opción 3: túnel de hojas; las hojas las crea pagina.js en profundidad -->
+    <div class="vuelo" aria-hidden="true">
+      <div class="tunel"></div>
+      <div class="camara"></div>
+    </div>
+
+    <!-- Solo para revisar las tres opciones. Se quita cuando se elija la definitiva. -->
+    <nav class="revision" aria-label="Probar intros">
+      <p>Probar intro</p>
+      <button type="button" data-intro="rejas" aria-label="Opción 1: Las rejas"><b>1</b><span>Las rejas</span></button>
+      <button type="button" data-intro="amanecer" aria-label="Opción 2: El amanecer"><b>2</b><span>El amanecer</span></button>
+      <button type="button" data-intro="selva" aria-label="Opción 3: La selva"><b>3</b><span>La selva</span></button>
+    </nav>
   </main>
 </body>
 </html>
