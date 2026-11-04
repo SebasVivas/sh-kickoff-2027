@@ -114,6 +114,10 @@
     return;
   }
 
+  // Las capas se quedan siempre en la tarjeta gráfica. Con el modo automático de GSAP cada movimiento
+  // del mouse las sacaba y las volvía a meter, y el navegador redibujaba todo el fondo: de ahí el parpadeo.
+  gsap.config({ force3D: true });
+
   /* ------------------------------------------------------------------ Estado común ------ */
   let ctx = null;
   let linea = null;

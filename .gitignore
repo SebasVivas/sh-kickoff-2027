@@ -1,1 +1,4 @@
 .DS_Store
+video/*.srt
+video/*.txt
+video/*.vtt
